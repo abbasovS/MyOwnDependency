@@ -68,7 +68,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
     @Override
     public Optional<ApiKeyEntity> ensureBootstrapKey() {
         if (bootstrapApiKey == null || bootstrapApiKey.isBlank()) {
-            log.warn("security.bootstrap-api-key is empty; no initial API key seeded.");
+            log.warn(" no initial API key seeded.");
             return Optional.empty();
         }
 
@@ -83,7 +83,7 @@ public class ApiKeyServiceImpl implements ApiKeyService {
         entity.setHashKey(hashed);
         entity.setActive(true);
         ApiKeyEntity saved = apiKeyRepository.save(entity);
-        log.info("Bootstrap API key seeded (name=bootstrap). Keep it secret and rotate in production.");
+        log.info(" name=bootstrap Keep it secret");
         return Optional.of(saved);
     }
 

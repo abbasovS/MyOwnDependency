@@ -23,7 +23,10 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return !request.getServletPath().startsWith("/api/");
+        String path = request.getServletPath();
+        String method = request.getMethod();
+        // Həm yolu, həm də metodu yoxlamaq daha təhlükəsizdir
+        return "/api/management/keys".equals(path) && "POST".equalsIgnoreCase(method);
     }
 
     @Override

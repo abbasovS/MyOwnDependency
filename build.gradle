@@ -1,12 +1,15 @@
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '3.3.5'
+    id 'java-library'
+    id 'org.springframework.boot' version '3.3.5' apply false
     id 'io.spring.dependency-management' version '1.1.6'
+    id 'maven-publish'
 }
 
-group = 'com.example'
-version = '0.0.1-SNAPSHOT'
-description = 'FileManage'
+apply plugin: 'org.springframework.boot'
+
+group = 'com.github.abbasovS'
+version = '1.0.0' // Snapshot yerinə stabil versiya ilə başlayaq
+description = 'FileManage Library'
 
 java {
     toolchain {
@@ -14,10 +17,10 @@ java {
     }
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
+// JitPack üçün lazımdır
+java {
+    withSourcesJar()
+    // withJavadocJar() // İstəsən əlavə edə bilərsən
 }
 
 repositories {
@@ -25,30 +28,44 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+    // api: Bu kitabxananı istifadə edənlər bu asılılıqları da görəcək
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    api 'org.springframework.boot:spring-boot-starter-web'
+
+    // implementation: Kitabxananın daxili işləri üçün
+    implementation 'org.liquibase:liquibase-core'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'io.minio:minio:8.6.0'
 
-    compileOnly 'org.projectlombok:lombok'
+    // Lombok üçün versiyanı mütləq yazırıq (JitPack xətası almamaq üçün)
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
     runtimeOnly 'org.postgresql:postgresql'
-    annotationProcessor 'org.projectlombok:lombok'
-
-    implementation 'io.minio:minio:8.5.12'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-jar {
+// ƏN VACİB HİSSƏ: Kitabxana üçün bootJar bağlanmalı, jar açılmalıdır
+bootJar {
     enabled = false
 }
 
-bootJar {
-    archiveFileName = 'app.jar'
+jar {
+    enabled = true
+    archiveClassifier = ''
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }

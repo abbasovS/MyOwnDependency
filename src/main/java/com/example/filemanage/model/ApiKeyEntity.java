@@ -17,16 +17,12 @@ public class ApiKeyEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "hash_key", nullable = false, unique = true)
     private String hashKey;
 
-    @Column(nullable = false)
     private boolean active = true;
 
-    @Column(length = 100)
     private String name;
 
-    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @PrePersist

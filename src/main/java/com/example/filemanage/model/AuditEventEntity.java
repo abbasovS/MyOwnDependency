@@ -18,7 +18,6 @@ public class AuditEventEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, length = 64)
     private String action;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,10 +28,8 @@ public class AuditEventEntity {
     @JoinColumn(name = "file_metadata_id")
     private FileMetaDataEntity fileMetadata;
 
-    @Column(name = "request_ip", length = 64)
     private String requestIp;
 
-    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
