@@ -1,7 +1,6 @@
 package com.example.filemanage.security;
 
-import com.example.filemanage.exception.NotFoundAlgoritm;
-import com.example.filemanage.service.impl.ApiKeyServiceImpl;
+import com.example.filemanage.service.concrete.ApiKeyService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,9 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -20,29 +19,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApiKeyFilter extends OncePerRequestFilter {
 
-    private final ApiKeyServiceImpl apiKeyService;
+    private final ApiKeyService apiKeyService;
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return !request.getServletPath().startsWith("/api/");
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         String requestKey = request.getHeader("X-API-Key");
-        String path = request.getServletPath();
-
-        if (path.startsWith("/api/v1/files/download")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
         if (requestKey != null && apiKeyService.isValid(requestKey)) {
-            var authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-
+            var authorities = List.of(new SimpleGrantedAuthority("ROLE_API"));
             UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken("API_USER", null, authorities);
-
-            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(auth);
-
         }
 
         filterChain.doFilter(request, response);

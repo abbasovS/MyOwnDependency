@@ -3,5 +3,5 @@ databaseChangeLog:
       file: liquibase/1.0/001-create-apikey-table.yml
   - include:
       file: liquibase/1.0/002-create-file-data-table.yml
-
-
+  - include:
+      file: liquibase/1.0/003-create-audit-events-table.yml

@@ -3,9 +3,9 @@ spring:
     name: file-storage-service
 
   datasource:
-    url: jdbc:postgresql://postgres-db:5432/file_storage_db
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:file_storage_db}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
 
   liquibase:
@@ -15,23 +15,26 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
-
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 storage:
-  provider: minio
+  provider: ${STORAGE_PROVIDER:minio}
+  local:
+    root-path: ${LOCAL_STORAGE_PATH:uploads}
+
+security:
+  bootstrap-api-key: ${BOOTSTRAP_API_KEY:bootstrap-dev-key-change-me}
 
 minio:
-  url: ${MINIO_URL}
-  accessKey: ${MINIO_ACCESS_KEY}
-  secretKey: ${MINIO_SECRET_KEY}
-  bucket: ${MINIO_BUCKET}
-
+  url: ${MINIO_URL:http://localhost:9000}
+  accessKey: ${MINIO_ACCESS_KEY:minioadmin}
+  secretKey: ${MINIO_SECRET_KEY:minioadmin}
+  bucket: ${MINIO_BUCKET:file-storage}

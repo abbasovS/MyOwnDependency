@@ -1,9 +1,7 @@
 package com.example.filemanage.exception;
 
-import java.security.NoSuchAlgorithmException;
-
-public class NotFoundAlgoritm extends Throwable {
-    public NotFoundAlgoritm(String s) {
-        super(s);
+public class NotFoundAlgoritm extends RuntimeException {
+    public NotFoundAlgoritm(String message, Throwable cause) {
+        super(message, cause);
     }
 }
