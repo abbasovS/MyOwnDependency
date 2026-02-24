@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: assistant
+      changes:
+        - createTable:
+            tableName: audit_events
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: action
+                  type: VARCHAR(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: api_key_id
+                  type: UUID
+              - column:
+                  name: file_metadata_id
+                  type: UUID
+              - column:
+                  name: request_ip
+                  type: VARCHAR(64)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            constraintName: fk_audit_events_apikey
+            baseTableName: audit_events
+            baseColumnNames: api_key_id
+            referencedTableName: api_keys
+            referencedColumnNames: id
+            onDelete: SET NULL
+        - addForeignKeyConstraint:
+            constraintName: fk_audit_events_file_metadata
+            baseTableName: audit_events
+            baseColumnNames: file_metadata_id
+            referencedTableName: file_metadata
+            referencedColumnNames: id
+            onDelete: SET NULL

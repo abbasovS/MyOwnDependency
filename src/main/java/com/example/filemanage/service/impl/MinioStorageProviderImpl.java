@@ -34,7 +34,7 @@ public class MinioStorageProviderImpl implements StorageProvider {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
             }
         } catch (Exception e) {
-            throw new RuntimeException("Bucket yaradıla bilmədi: " + e.getMessage());
+            throw new StorageException("MinIO bucket initialization failed.");
         }
     }
     @Override
@@ -46,12 +46,12 @@ public class MinioStorageProviderImpl implements StorageProvider {
                             .bucket(bucketName)
                             .object(storageKey)
                             .stream(file.getInputStream(), file.getSize(), -1)
-                            .contentType(file.getContentType())
+                            .contentType(file.getContentType() == null ? "application/octet-stream" : file.getContentType())
                             .build()
             );
             return storageKey;
         } catch (Exception e) {
-            throw new StorageException("MinIO upload xətası!");
+            throw new StorageException("MinIO upload failed.");
         }
     }
 
@@ -62,7 +62,7 @@ public class MinioStorageProviderImpl implements StorageProvider {
                     GetObjectArgs.builder().bucket(bucketName).object(storageKey).build()
             );
         } catch (Exception e) {
-            throw new StorageException("MinIO download xətası!");
+            throw new StorageException("MinIO download failed.");
         }
     }
 
@@ -73,7 +73,7 @@ public class MinioStorageProviderImpl implements StorageProvider {
                     RemoveObjectArgs.builder().bucket(bucketName).object(storageKey).build()
             );
         } catch (Exception e) {
-            throw new StorageException("MinIO silmə xətası!");
+            throw new StorageException("MinIO delete failed.");
         }
     }
 

@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 1
-      author: Senan
+      author: assistant
       changes:
         - createTable:
             tableName: api_keys
