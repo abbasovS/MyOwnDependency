@@ -2,6 +2,7 @@ package com.example.filemanage.controller;
 
 import com.example.filemanage.dto.FileResponse;
 import com.example.filemanage.service.concrete.FileService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -19,14 +20,15 @@ import java.io.InputStream;
 public class FileController {
     private final FileService fileService;
 
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<FileResponse> uploadFile(
-            @RequestParam("file") MultipartFile file,
+            @RequestPart("file") MultipartFile file,
             @RequestHeader("X-API-Key") String apiKey) {
 
         return ResponseEntity.ok(fileService.uploadFile(file, apiKey));
     }
 
+    @Operation(summary = "Faylı yüklə")
     @GetMapping("/download/{storageKey}")
     public ResponseEntity<Resource> downloadFile(
             @PathVariable String storageKey,
@@ -40,6 +42,7 @@ public class FileController {
                 .body(resource);
     }
 
+    @Operation(summary = "fayli sil")
     @DeleteMapping("/delete/{storageKey}")
     public ResponseEntity<Void> deleteFile(
             @PathVariable String storageKey,

@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @ComponentScan(basePackages = "com.example.filemanage")
 @EnableJpaRepositories(basePackages = "com.example.filemanage.repository")
-@EntityScan(basePackages = "com.example.filemanage.entity")
+@EntityScan(basePackages = "com.example.filemanage.model")
 public class FileManageAutoConfiguration {
 }

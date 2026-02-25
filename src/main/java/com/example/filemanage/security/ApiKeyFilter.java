@@ -25,7 +25,6 @@ public class ApiKeyFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
         String method = request.getMethod();
-        // Həm yolu, həm də metodu yoxlamaq daha təhlükəsizdir
         return "/api/management/keys".equals(path) && "POST".equalsIgnoreCase(method);
     }
 

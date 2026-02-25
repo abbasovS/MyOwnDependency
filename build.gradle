@@ -8,7 +8,7 @@ plugins {
 apply plugin: 'org.springframework.boot'
 
 group = 'com.github.abbasovS'
-version = '1.0.0' // Snapshot yerinə stabil versiya ilə başlayaq
+version = '1.0.0'
 description = 'FileManage Library'
 
 java {
@@ -17,10 +17,8 @@ java {
     }
 }
 
-// JitPack üçün lazımdır
 java {
     withSourcesJar()
-    // withJavadocJar() // İstəsən əlavə edə bilərsən
 }
 
 repositories {
@@ -28,17 +26,16 @@ repositories {
 }
 
 dependencies {
-    // api: Bu kitabxananı istifadə edənlər bu asılılıqları da görəcək
     api 'org.springframework.boot:spring-boot-starter-data-jpa'
     api 'org.springframework.boot:spring-boot-starter-web'
 
-    // implementation: Kitabxananın daxili işləri üçün
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
     implementation 'org.liquibase:liquibase-core'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'io.minio:minio:8.6.0'
 
-    // Lombok üçün versiyanı mütləq yazırıq (JitPack xətası almamaq üçün)
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
@@ -48,14 +45,14 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 }
 
-// ƏN VACİB HİSSƏ: Kitabxana üçün bootJar bağlanmalı, jar açılmalıdır
 bootJar {
-    enabled = false
+    enabled = true
+    archiveClassifier = 'app.jar'
 }
 
 jar {
-    enabled = true
-    archiveClassifier = ''
+    enabled = false
+
 }
 
 publishing {
