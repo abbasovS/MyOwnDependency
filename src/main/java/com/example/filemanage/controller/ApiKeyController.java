@@ -16,4 +16,9 @@ public class ApiKeyController {
     public ResponseEntity<ApiKeyResponse> createKey(@RequestParam(defaultValue = "client") String name) {
         return ResponseEntity.ok(apiKeyService.generateKey(name));
     }
+
+    @GetMapping
+    public ResponseEntity<ApiKeyResponse> createKeyViaGet(@RequestParam(defaultValue = "client") String name) {
+        return ResponseEntity.ok(apiKeyService.generateKey(name));
+    }
 }

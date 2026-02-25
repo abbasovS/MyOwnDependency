@@ -30,9 +30,10 @@ Məsələn local provider:
 STORAGE_PROVIDER=local docker compose up -d --build
 ```
 
-## API endpoints (hamısı API key tələb edir)
+## API endpoints
 
-- `POST /api/management/keys?name=my-client` - yeni API key yaradır (raw key yalnız bu cavabda görünür)
+- `POST /api/management/keys?name=my-client` - yeni API key yaradır (raw key yalnız bu cavabda görünür, **açıq endpoint-dir**).
+- `GET /api/management/keys?name=my-client` - test rahatlığı üçün eyni işi görür (açıq endpoint).
 - `POST /api/v1/files/upload` - fayl upload
 - `GET /api/v1/files/download/{storageKey}` - fayl download
 - `DELETE /api/v1/files/delete/{storageKey}` - fayl sil
@@ -43,4 +44,4 @@ Header:
 X-API-Key: <your_api_key>
 ```
 
-API key göndərilməzsə və ya səhvdirsə `401 Unauthorized` qaytarılır.
+Qeyd: `POST/GET /api/management/keys` endpoint-i API key tələb etmir. Digər `/api/v1/files/**` endpoint-lər üçün API key göndərilməzsə və ya səhvdirsə `401 Unauthorized` qaytarılır.
