@@ -25,6 +25,15 @@ spring:
       max-file-size: 50MB
       max-request-size: 50MB
 
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+auth:
+  jwt-secret: ${JWT_SECRET:change-me-change-me-change-me-change-me}
+  jwt-expiration-minutes: ${JWT_EXPIRATION_MINUTES:120}
+  otp-expiration-minutes: ${OTP_EXPIRATION_MINUTES:10}
+  otp-topic: ${OTP_TOPIC:otp-email-topic}
+
 storage:
   provider: ${STORAGE_PROVIDER}
   local:

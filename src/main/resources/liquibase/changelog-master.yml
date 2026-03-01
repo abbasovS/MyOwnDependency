@@ -5,3 +5,9 @@ databaseChangeLog:
       file: liquibase/1.0/002-create-file-data-table.yml
   - include:
       file: liquibase/1.0/003-create-audit-events-table.yml
+  - include:
+      file: liquibase/1.1/004-create-users-table.yml
+  - include:
+      file: liquibase/1.1/005-create-otp-verification-table.yml
+  - include:
+      file: liquibase/1.1/006-create-user-sessions-table.yml
